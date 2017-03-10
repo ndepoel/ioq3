@@ -871,8 +871,9 @@ int G_ItemDisabled( gitem_t *item ) {
 
 	char name[128];
 
-	Com_sprintf(name, sizeof(name), "disable_%s", item->classname);
-	return trap_Cvar_VariableIntegerValue( name );
+	return 1;
+	//Com_sprintf(name, sizeof(name), "disable_%s", item->classname);
+	//return trap_Cvar_VariableIntegerValue( name );
 }
 
 /*

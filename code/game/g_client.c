@@ -1180,19 +1180,19 @@ void ClientSpawn(gentity_t *ent) {
 
 	client->ps.clientNum = index;
 
-	client->ps.stats[STAT_WEAPONS] = ( 1 << WP_MACHINEGUN );
+	client->ps.stats[STAT_WEAPONS] = ( 1 << WP_RAILGUN );
 	if ( g_gametype.integer == GT_TEAM ) {
-		client->ps.ammo[WP_MACHINEGUN] = 50;
+		client->ps.ammo[WP_RAILGUN] = 999;
 	} else {
-		client->ps.ammo[WP_MACHINEGUN] = 100;
+		client->ps.ammo[WP_RAILGUN] = 999;
 	}
 
-	client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
+	//client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
 	client->ps.ammo[WP_GAUNTLET] = -1;
 	client->ps.ammo[WP_GRAPPLING_HOOK] = -1;
 
 	// health will count down towards max_health
-	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] + 25;
+	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];// +25;
 
 	G_SetOrigin( ent, spawn_origin );
 	VectorCopy( spawn_origin, client->ps.origin );
