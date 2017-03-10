@@ -39,3 +39,5 @@ profile
 *.sdf
 *.opensdf
 *.suo
+.vs
+misc/winquake.res
