@@ -520,6 +520,9 @@ void weapon_railgun_fire (gentity_t *ent) {
 
 	// the final trace endpos will be the terminal point of the rail trail
 
+	// Do splash damage!! :D
+	G_RadiusDamage(trace.endpos, ent, 100, 120, NULL, ent->splashMethodOfDeath);
+
 	// snap the endpos to integers to save net bandwidth, but nudged towards the line
 	SnapVectorTowards( trace.endpos, muzzle );
 

@@ -978,6 +978,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	if ( damage < 1 ) {
 		damage = 1;
 	}
+
+	// Disable splash damage, after we applied the knockback
+	if (dflags & DAMAGE_RADIUS) {
+		damage = 0;
+	}
+
 	take = damage;
 
 	// save some from armor
