@@ -187,6 +187,7 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 	float		list_dist[MAX_SPAWN_POINTS];
 	gentity_t	*list_spot[MAX_SPAWN_POINTS];
 	int			numSpots, rnd, i, j;
+	gclient_t	*cl;
 
 	numSpots = 0;
 	spot = NULL;
@@ -203,9 +204,22 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 			continue;
 		}
 
+		// Spawn as far away from the avoid point and as far away from other players as possible
 		VectorSubtract( spot->s.origin, avoidPoint, delta );
-		dist = VectorLength( delta );
+		dist = (float)sqrt(VectorLength(delta));
 
+		for (i = 0; i < g_maxclients.integer; i++)
+		{
+			cl = level.clients + i;
+			if (cl->pers.connected != CON_CONNECTED) {
+				continue;
+			}
+
+			VectorSubtract( spot->s.origin, cl->ps.origin, delta );
+			dist += (float)sqrt(VectorLength(delta));
+		}
+
+		// Create a sorted list of spawn points through insertion sorting
 		for (i = 0; i < numSpots; i++)
 		{
 			if(dist > list_dist[i])
@@ -249,7 +263,7 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 	}
 
 	// select a random spot from the spawn points furthest away
-	rnd = random() * (numSpots / 2);
+	rnd = random() * (numSpots / 3);
 
 	VectorCopy (list_spot[rnd]->s.origin, origin);
 	origin[2] += 9;
