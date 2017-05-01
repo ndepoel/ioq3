@@ -530,9 +530,11 @@ ifdef MINGW
       CC=gcc
     endif
 
-    ifndef WINDRES
-      WINDRES=windres
-    endif
+  endif
+
+  # using generic windres if specific one is not present
+  ifndef WINDRES
+    WINDRES=windres
   endif
 
   ifeq ($(CC),)
@@ -652,13 +654,13 @@ else # ifdef MINGW
 ifeq ($(PLATFORM),freebsd)
 
   # flags
-  BASE_CFLAGS = $(shell env MACHINE_ARCH=$(ARCH) make -f /dev/null -VCFLAGS) \
+  BASE_CFLAGS = \
     -Wall -fno-strict-aliasing -Wimplicit -Wstrict-prototypes \
     -DUSE_ICON -DMAP_ANONYMOUS=MAP_ANON
   CLIENT_CFLAGS += $(SDL_CFLAGS)
   HAVE_VM_COMPILED = true
 
-  OPTIMIZEVM = -O3
+  OPTIMIZEVM =
   OPTIMIZE = $(OPTIMIZEVM) -ffast-math
 
   SHLIBEXT=so
@@ -2655,9 +2657,9 @@ $(B)/ded/%.o: $(NDIR)/%.c
 
 # Extra dependencies to ensure the git version is incorporated
 ifeq ($(USE_GIT),1)
-  $(B)/client/cl_console.o : .git/index
-  $(B)/client/common.o : .git/index
-  $(B)/ded/common.o : .git/index
+  $(B)/client/cl_console.o : .git
+  $(B)/client/common.o : .git
+  $(B)/ded/common.o : .git
 endif
 
 
